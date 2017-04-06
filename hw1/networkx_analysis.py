@@ -88,9 +88,9 @@ if __name__ == "__main__" :
 	result = []  
 	# for filename in sys.argv[1:1+1] : 
 	myedge = readfile(sys.argv[1]) 
-	# DVD = readcat('DVD.csv') 
-	# Music = readcat('Music.csv') 
-	# Book = readcat('Book.csv') 
+	DVD = readcat('./data/DVD.csv') 
+	Music = readcat('./data/Music.csv') 
+	Book = readcat('./data/Book.csv') 
 	print('======== All ========')
 	G = nx.Graph()                                        
 	for i in range (len(myedge)):                                                                 
@@ -118,6 +118,14 @@ if __name__ == "__main__" :
 	
 	writefile('degrees.txt',degrees)
 
+	# t0 = time.time() 
+	# eigenvector = nx.eigenvector_centrality(G)
+	# print ('eigenvector time:%s' %(time.time() - t0))
+	# print ("maximum of eigenvector :%s" %round(np.amax(eigenvector.values()),4)) 
+	# print ("minimum of eigenvector :%s" %round(np.amin(eigenvector.values()),4))
+	# print ("mean of eigenvector:%s" %round(np.mean(eigenvector.values()),4))
+	# writefile('eigenvector.txt',eigenvector)
+
 	t0 = time.time() 
 	clustering = nx.clustering(G)
 	print ('clustering time:%s' %(time.time() - t0))
@@ -126,207 +134,225 @@ if __name__ == "__main__" :
 	print ("mean of clustering:%s" %round(np.mean(clustering.values()),4))
 	writefile('clustering.txt',clustering)
 
-	# print('======== Book ========')
-	# Booknodes = []
-	# for node in Book:
-	# 	try:
-	# 		G.remove_node(int(node[0]))
-	# 		Booknodes.append(int(node[0]))
-	# 	except Exception as e:
-	# 		pass
+	print('======== Book ========')
+	Booknodes = []
+	for node in Book:
+		try:
+			G.remove_node(int(node[0]))
+			Booknodes.append(int(node[0]))
+		except Exception as e:
+			pass
 
-	# K = nx.Graph()                                        
-	# for i in range (len(myedge)):                                                                 
-	# 	K.add_edge(myedge[i][0],myedge[i][1])  
-	# H = K.subgraph(Booknodes)	
+	K = nx.Graph()                                        
+	for i in range (len(myedge)):                                                                 
+		K.add_edge(myedge[i][0],myedge[i][1])  
+	H = K.subgraph(Booknodes)	
 
-	# t0 = time.time()                                  
-	# print ("number of nodes :%s, time:%s" %(H.number_of_nodes(),time.time() - t0))
-	# t0 = time.time() 
-	# print ("number of edges :%s, time:%s" %(H.number_of_edges(),time.time() - t0))
-	# t0 = time.time() 
-	# try:
-	# 	print ("diameter :%s, time:%s" %(nx.diameter(G),time.time() - t0))
-	# except Exception as e:
-	# 	print ("diameter :%s, time:%s" %('infinite path length',time.time() - t0))
-	# t0 = time.time() 
-	# print ("network density :%s, time:%s" %(round(nx.density(H),8),time.time() - t0))
-	# t0 = time.time() 
-	# try:
-	# 	print ("mean geodesic distance :%s, time:%s" %(nx.average_shortest_path_length(G),time.time() - t0))
-	# except Exception as e:
-	# 	print ("mean geodesic distance :%s, time:%s" %('infinite path length',time.time() - t0))
+	t0 = time.time()                                  
+	print ("number of nodes :%s, time:%s" %(H.number_of_nodes(),time.time() - t0))
+	t0 = time.time() 
+	print ("number of edges :%s, time:%s" %(H.number_of_edges(),time.time() - t0))
+	t0 = time.time() 
+	try:
+		print ("diameter :%s, time:%s" %(nx.diameter(G),time.time() - t0))
+	except Exception as e:
+		print ("diameter :%s, time:%s" %('infinite path length',time.time() - t0))
+	t0 = time.time() 
+	print ("network density :%s, time:%s" %(round(nx.density(H),8),time.time() - t0))
+	t0 = time.time() 
+	try:
+		print ("mean geodesic distance :%s, time:%s" %(nx.average_shortest_path_length(G),time.time() - t0))
+	except Exception as e:
+		print ("mean geodesic distance :%s, time:%s" %('infinite path length',time.time() - t0))
 	
-	# t0 = time.time() 
-	# print ("assortativity coefficient :%s, time:%s" %(round(nx.degree_assortativity_coefficient(H),4),time.time() - t0))
+	t0 = time.time() 
+	print ("assortativity coefficient :%s, time:%s" %(round(nx.degree_assortativity_coefficient(H),4),time.time() - t0))
 
-	# t0 = time.time() 
-	# degrees = H.degree()
-	# print ('degree time:%s' %(time.time() - t0))
-	# print ("maximum of degree :%s" %np.amax(degrees.values())) 
-	# print ("maximum of degree :%s" %np.amin(degrees.values()))
-	# print ("mean of degree :%s" %round(np.mean(degrees.values()),4))
+	t0 = time.time() 
+	degrees = H.degree()
+	print ('degree time:%s' %(time.time() - t0))
+	print ("maximum of degree :%s" %np.amax(degrees.values())) 
+	print ("maximum of degree :%s" %np.amin(degrees.values()))
+	print ("mean of degree :%s" %round(np.mean(degrees.values()),4))
 	
-	# writefile('degreesBook.txt',degrees)
+	writefile('degreesBook.txt',degrees)
 
-	# t0 = time.time() 
-	# clustering = nx.clustering(H)
-	# print ('clustering time:%s' %(time.time() - t0))
-	# print ("maximum of clustering :%s" %round(np.amax(clustering.values()),4)) 
-	# print ("minimum of clustering :%s" %round(np.amin(clustering.values()),4))
-	# print ("mean of clustering:%s" %round(np.mean(clustering.values()),4))
-	# writefile('clusteringBook.txt',clustering)
+	t0 = time.time() 
+	closeness = nx.closeness_centrality(H)
+	print ('closeness time:%s' %(time.time() - t0))
+	print ("maximum of closeness :%s" %round(np.amax(closeness.values()),4)) 
+	print ("minimum of closeness :%s" %round(np.amin(closeness.values()),4))
+	print ("mean of closenes
+	s:%s" %round(np.mean(closeness.values()),4))
+	writefile('closenessBook.txt',closeness)
 
-	# print('======== Music ========')
-	# Musicnodes = []
-	# for node in Music:
-	# 	try:
-	# 		G.remove_node(int(node[0]))
-	# 		Musicnodes.append(int(node[0]))
-	# 	except Exception as e:
-	# 		pass
+	t0 = time.time() 
+	eigenvector = nx.eigenvector_centrality(H)
+	print ('eigenvector time:%s' %(time.time() - t0))
+	print ("maximum of eigenvector :%s" %round(np.amax(eigenvector.values()),4)) 
+	print ("minimum of eigenvector :%s" %round(np.amin(eigenvector.values()),4))
+	print ("mean of eigenvector
+	s:%s" %round(np.mean(closeness.values()),4))
+	writefile('eigenvectorBook.txt',eigenvector)
 
-	# K = nx.Graph()                                        
-	# for i in range (len(myedge)):                                                                 
-	# 	K.add_edge(myedge[i][0],myedge[i][1])  
-	# H = K.subgraph(Musicnodes)	
+	t0 = time.time() 
+	clustering = nx.clustering(G)
+	print ('clustering time:%s' %(time.time() - t0))
+	print ("maximum of clustering :%s" %round(np.amax(clustering.values()),4)) 
+	print ("minimum of clustering :%s" %round(np.amin(clustering.values()),4))
+	print ("mean of clustering:%s" %round(np.mean(clustering.values()),4))
+	writefile('clusteringBook.txt',clustering)
 
-	# t0 = time.time()                                  
-	# print ("number of nodes :%s, time:%s" %(H.number_of_nodes(),time.time() - t0))
-	# t0 = time.time() 
-	# print ("number of edges :%s, time:%s" %(H.number_of_edges(),time.time() - t0))
-	# t0 = time.time() 
-	# try:
-	# 	print ("diameter :%s, time:%s" %(nx.diameter(G),time.time() - t0))
-	# except Exception as e:
-	# 	print ("diameter :%s, time:%s" %('infinite path length',time.time() - t0))
-	# t0 = time.time() 
-	# print ("network density :%s, time:%s" %(round(nx.density(H),8),time.time() - t0))
-	# t0 = time.time() 
-	# try:
-	# 	print ("mean geodesic distance :%s, time:%s" %(nx.average_shortest_path_length(G),time.time() - t0))
-	# except Exception as e:
-	# 	print ("mean geodesic distance :%s, time:%s" %('infinite path length',time.time() - t0))
+	print('======== Music ========')
+	Musicnodes = []
+	for node in Music:
+		try:
+			G.remove_node(int(node[0]))
+			Musicnodes.append(int(node[0]))
+		except Exception as e:
+			pass
+
+	K = nx.Graph()                                        
+	for i in range (len(myedge)):                                                                 
+		K.add_edge(myedge[i][0],myedge[i][1])  
+	H = K.subgraph(Musicnodes)	
+
+	t0 = time.time()                                  
+	print ("number of nodes :%s, time:%s" %(H.number_of_nodes(),time.time() - t0))
+	t0 = time.time() 
+	print ("number of edges :%s, time:%s" %(H.number_of_edges(),time.time() - t0))
+	t0 = time.time() 
+	try:
+		print ("diameter :%s, time:%s" %(nx.diameter(G),time.time() - t0))
+	except Exception as e:
+		print ("diameter :%s, time:%s" %('infinite path length',time.time() - t0))
+	t0 = time.time() 
+	print ("network density :%s, time:%s" %(round(nx.density(H),8),time.time() - t0))
+	t0 = time.time() 
+	try:
+		print ("mean geodesic distance :%s, time:%s" %(nx.average_shortest_path_length(G),time.time() - t0))
+	except Exception as e:
+		print ("mean geodesic distance :%s, time:%s" %('infinite path length',time.time() - t0))
 	
-	# t0 = time.time() 
-	# print ("assortativity coefficient :%s, time:%s" %(round(nx.degree_assortativity_coefficient(H),4),time.time() - t0))
+	t0 = time.time() 
+	print ("assortativity coefficient :%s, time:%s" %(round(nx.degree_assortativity_coefficient(H),4),time.time() - t0))
 
-	# t0 = time.time() 
-	# degrees = H.degree()
-	# print ('degree time:%s' %(time.time() - t0))
-	# print ("maximum of degree :%s" %np.amax(degrees.values())) 
-	# print ("maximum of degree :%s" %np.amin(degrees.values()))
-	# print ("mean of degree :%s" %round(np.mean(degrees.values()),4))
+	t0 = time.time() 
+	degrees = H.degree()
+	print ('degree time:%s' %(time.time() - t0))
+	print ("maximum of degree :%s" %np.amax(degrees.values())) 
+	print ("maximum of degree :%s" %np.amin(degrees.values()))
+	print ("mean of degree :%s" %round(np.mean(degrees.values()),4))
 	
-	# writefile('degreesMusic.txt',degrees)
+	writefile('degreesMusic.txt',degrees)
 
-	# t0 = time.time() 
-	# betweenness =  nx.betweenness_centrality(H)
-	# print ('betweenness time:%s' %(time.time() - t0))
-	# print ("maximum of betweenness :%s" %round(np.amax(betweenness.values()),4)) 
-	# print ("minimum of betweenness :%s" %round(np.amin(betweenness.values()),4))
-	# print ("mean of betweenness:%s" %round(np.mean(betweenness.values()),4))
-	# writefile('betweennessMusic.txt',betweenness)
+	t0 = time.time() 
+	betweenness =  nx.betweenness_centrality(H)
+	print ('betweenness time:%s' %(time.time() - t0))
+	print ("maximum of betweenness :%s" %round(np.amax(betweenness.values()),4)) 
+	print ("minimum of betweenness :%s" %round(np.amin(betweenness.values()),4))
+	print ("mean of betweenness:%s" %round(np.mean(betweenness.values()),4))
+	writefile('betweennessMusic.txt',betweenness)
 
-	# t0 = time.time() 
-	# closeness = nx.closeness_centrality(H)
-	# print ('betweenness time:%s' %(time.time() - t0))
-	# print ("maximum of closeness :%s" %round(np.amax(closeness.values()),4)) 
-	# print ("minimum of closeness :%s" %round(np.amin(closeness.values()),4))
-	# print ("mean of closeness:%s" %round(np.mean(closeness.values()),4))
-	# writefile('closenessMusic.txt',closeness)
+	t0 = time.time() 
+	closeness = nx.closeness_centrality(H)
+	print ('closeness time:%s' %(time.time() - t0))
+	print ("maximum of closeness :%s" %round(np.amax(closeness.values()),4)) 
+	print ("minimum of closeness :%s" %round(np.amin(closeness.values()),4))
+	print ("mean of closeness:%s" %round(np.mean(closeness.values()),4))
+	writefile('closenessMusic.txt',closeness)
 
-	# t0 = time.time() 
-	# eigenvector = nx.eigenvector_centrality(H)
-	# print ('eigenvector time:%s' %(time.time() - t0))
-	# print ("maximum of eigenvector :%s" %round(np.amax(eigenvector.values()),4)) 
-	# print ("minimum of eigenvector :%s" %round(np.amin(eigenvector.values()),4))
-	# print ("mean of eigenvector:%s" %round(np.mean(eigenvector.values()),4))
-	# writefile('eigenvectorMusic.txt',eigenvector)
+	t0 = time.time() 
+	eigenvector = nx.eigenvector_centrality(H)
+	print ('eigenvector time:%s' %(time.time() - t0))
+	print ("maximum of eigenvector :%s" %round(np.amax(eigenvector.values()),4)) 
+	print ("minimum of eigenvector :%s" %round(np.amin(eigenvector.values()),4))
+	print ("mean of eigenvector:%s" %round(np.mean(eigenvector.values()),4))
+	writefile('eigenvectorMusic.txt',eigenvector)
 
-	# t0 = time.time() 
-	# clustering = nx.clustering(H)
-	# print ('clustering time:%s' %(time.time() - t0))
-	# print ("maximum of clustering :%s" %round(np.amax(clustering.values()),4)) 
-	# print ("minimum of clustering :%s" %round(np.amin(clustering.values()),4))
-	# print ("mean of clustering:%s" %round(np.mean(clustering.values()),4))
-	# writefile('clusteringMusic.txt',clustering)
+	t0 = time.time() 
+	clustering = nx.clustering(H)
+	print ('clustering time:%s' %(time.time() - t0))
+	print ("maximum of clustering :%s" %round(np.amax(clustering.values()),4)) 
+	print ("minimum of clustering :%s" %round(np.amin(clustering.values()),4))
+	print ("mean of clustering:%s" %round(np.mean(clustering.values()),4))
+	writefile('clusteringMusic.txt',clustering)
 
 
-	# print('======== DVD ========')
-	# DVDnodes = []
-	# for node in DVD:
-	# 	try:
-	# 		G.remove_node(int(node[0]))
-	# 		DVDnodes.append(int(node[0]))
-	# 	except Exception as e:
-	# 		pass
+	print('======== DVD ========')
+	DVDnodes = []
+	for node in DVD:
+		try:
+			G.remove_node(int(node[0]))
+			DVDnodes.append(int(node[0]))
+		except Exception as e:
+			pass
 
-	# K = nx.Graph()                                        
-	# for i in range (len(myedge)):                                                                 
-	# 	K.add_edge(myedge[i][0],myedge[i][1])  
-	# H = K.subgraph(DVDnodes)	
+	K = nx.Graph()                                        
+	for i in range (len(myedge)):                                                                 
+		K.add_edge(myedge[i][0],myedge[i][1])  
+	H = K.subgraph(DVDnodes)	
 
-	# t0 = time.time()                                  
-	# print ("number of nodes :%s, time:%s" %(H.number_of_nodes(),time.time() - t0))
-	# t0 = time.time() 
-	# print ("number of edges :%s, time:%s" %(H.number_of_edges(),time.time() - t0))
-	# t0 = time.time() 
-	# try:
-	# 	print ("diameter :%s, time:%s" %(nx.diameter(G),time.time() - t0))
-	# except Exception as e:
-	# 	print ("diameter :%s, time:%s" %('infinite path length',time.time() - t0))
-	# t0 = time.time() 
-	# print ("network density :%s, time:%s" %(round(nx.density(H),8),time.time() - t0))
-	# t0 = time.time() 
-	# try:
-	# 	print ("mean geodesic distance :%s, time:%s" %(nx.average_shortest_path_length(G),time.time() - t0))
-	# except Exception as e:
-	# 	print ("mean geodesic distance :%s, time:%s" %('infinite path length',time.time() - t0))
+	t0 = time.time()                                  
+	print ("number of nodes :%s, time:%s" %(H.number_of_nodes(),time.time() - t0))
+	t0 = time.time() 
+	print ("number of edges :%s, time:%s" %(H.number_of_edges(),time.time() - t0))
+	t0 = time.time() 
+	try:
+		print ("diameter :%s, time:%s" %(nx.diameter(G),time.time() - t0))
+	except Exception as e:
+		print ("diameter :%s, time:%s" %('infinite path length',time.time() - t0))
+	t0 = time.time() 
+	print ("network density :%s, time:%s" %(round(nx.density(H),8),time.time() - t0))
+	t0 = time.time() 
+	try:
+		print ("mean geodesic distance :%s, time:%s" %(nx.average_shortest_path_length(G),time.time() - t0))
+	except Exception as e:
+		print ("mean geodesic distance :%s, time:%s" %('infinite path length',time.time() - t0))
 	
-	# t0 = time.time() 
-	# print ("assortativity coefficient :%s, time:%s" %(round(nx.degree_assortativity_coefficient(H),4),time.time() - t0))
+	t0 = time.time() 
+	print ("assortativity coefficient :%s, time:%s" %(round(nx.degree_assortativity_coefficient(H),4),time.time() - t0))
 
-	# t0 = time.time() 
-	# degrees = H.degree()
-	# print ('degree time:%s' %(time.time() - t0))
-	# print ("maximum of degree :%s" %np.amax(degrees.values())) 
-	# print ("maximum of degree :%s" %np.amin(degrees.values()))
-	# print ("mean of degree :%s" %round(np.mean(degrees.values()),4))
+	t0 = time.time() 
+	degrees = H.degree()
+	print ('degree time:%s' %(time.time() - t0))
+	print ("maximum of degree :%s" %np.amax(degrees.values())) 
+	print ("maximum of degree :%s" %np.amin(degrees.values()))
+	print ("mean of degree :%s" %round(np.mean(degrees.values()),4))
 	
-	# writefile('degreesDVD.txt',degrees)
+	writefile('degreesDVD.txt',degrees)
 
-	# t0 = time.time() 
-	# betweenness =  nx.betweenness_centrality(H)
-	# print ('betweenness time:%s' %(time.time() - t0))
-	# print ("maximum of betweenness :%s" %round(np.amax(betweenness.values()),4)) 
-	# print ("minimum of betweenness :%s" %round(np.amin(betweenness.values()),4))
-	# print ("mean of betweenness:%s" %round(np.mean(betweenness.values()),4))
-	# writefile('betweennessDVD.txt',betweenness)
+	t0 = time.time() 
+	betweenness =  nx.betweenness_centrality(H)
+	print ('betweenness time:%s' %(time.time() - t0))
+	print ("maximum of betweenness :%s" %round(np.amax(betweenness.values()),4)) 
+	print ("minimum of betweenness :%s" %round(np.amin(betweenness.values()),4))
+	print ("mean of betweenness:%s" %round(np.mean(betweenness.values()),4))
+	writefile('betweennessDVD.txt',betweenness)
 
-	# t0 = time.time() 
-	# closeness = nx.closeness_centrality(H)
-	# print ('betweenness time:%s' %(time.time() - t0))
-	# print ("maximum of closeness :%s" %round(np.amax(closeness.values()),4)) 
-	# print ("minimum of closeness :%s" %round(np.amin(closeness.values()),4))
-	# print ("mean of closeness:%s" %round(np.mean(closeness.values()),4))
-	# writefile('closenessDVD.txt',closeness)
+	t0 = time.time() 
+	closeness = nx.closeness_centrality(H)
+	print ('closeness time:%s' %(time.time() - t0))
+	print ("maximum of closeness :%s" %round(np.amax(closeness.values()),4)) 
+	print ("minimum of closeness :%s" %round(np.amin(closeness.values()),4))
+	print ("mean of closeness:%s" %round(np.mean(closeness.values()),4))
+	writefile('closenessDVD.txt',closeness)
 
-	# t0 = time.time() 
-	# eigenvector = nx.eigenvector_centrality(H)
-	# print ('eigenvector time:%s' %(time.time() - t0))
-	# print ("maximum of eigenvector :%s" %round(np.amax(eigenvector.values()),4)) 
-	# print ("minimum of eigenvector :%s" %round(np.amin(eigenvector.values()),4))
-	# print ("mean of eigenvector:%s" %round(np.mean(eigenvector.values()),4))
-	# writefile('eigenvectorDVD.txt',eigenvector)
+	t0 = time.time() 
+	eigenvector = nx.eigenvector_centrality(H)
+	print ('eigenvector time:%s' %(time.time() - t0))
+	print ("maximum of eigenvector :%s" %round(np.amax(eigenvector.values()),4)) 
+	print ("minimum of eigenvector :%s" %round(np.amin(eigenvector.values()),4))
+	print ("mean of eigenvector:%s" %round(np.mean(eigenvector.values()),4))
+	writefile('eigenvectorDVD.txt',eigenvector)
 
-	# t0 = time.time() 
-	# clustering = nx.clustering(H)
-	# print ('clustering time:%s' %(time.time() - t0))
-	# print ("maximum of clustering :%s" %round(np.amax(clustering.values()),4)) 
-	# print ("minimum of clustering :%s" %round(np.amin(clustering.values()),4))
-	# print ("mean of clustering:%s" %round(np.mean(clustering.values()),4))
-	# writefile('clusteringDVD.txt',clustering)
+	t0 = time.time() 
+	clustering = nx.clustering(H)
+	print ('clustering time:%s' %(time.time() - t0))
+	print ("maximum of clustering :%s" %round(np.amax(clustering.values()),4)) 
+	print ("minimum of clustering :%s" %round(np.amin(clustering.values()),4))
+	print ("mean of clustering:%s" %round(np.mean(clustering.values()),4))
+	writefile('clusteringDVD.txt',clustering)
 
 
 
