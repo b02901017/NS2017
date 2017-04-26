@@ -4,4 +4,8 @@ amazon-meta.txt
 *.txt
 *.csv
 *.docx
-
+data
+*.pdf
+*.png
+*.odt
+*.pyc
