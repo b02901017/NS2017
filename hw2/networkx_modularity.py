@@ -1,11 +1,9 @@
 import matplotlib.pyplot as plt 
-
 import sys
 import numpy as np
 import time
 import csv
 import time
-import itertools
 import networkx as nx
 import community
 import random

@@ -78,6 +78,7 @@ def numofcommunities(partition):
 def drawpart(G, partition, name):
     size = float(len(set(partition.values())))
     pos = nx.spring_layout(G)
+
     count = 0 
     for com in set(partition.values()) :
         count += 1
