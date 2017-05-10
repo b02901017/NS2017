@@ -27,38 +27,39 @@ def powerlaw_network(alpha, size):
     degree = list(G.degree().values())
     results = plfit.plfit(degree)
     S = float(giant.number_of_nodes())/G.number_of_nodes()
-    print("{0},{1},{2},{3},{4},{5} ".format(alpha, G.number_of_nodes(), G.number_of_edges() ,S, results.plfit()[1], results.plfit()[0]))
-    distribution = []
-    for d in  set(degree):
-        distribution.append([d,degree.count(d)])
+    print("{0},{1},{2},{3} ".format(alpha, G.number_of_nodes(), G.number_of_edges() ,S, nx.radius(G)))
+    # distribution = []
+    # for d in  set(degree):
+    #     distribution.append([d,degree.count(d)])
 
-    # orgin degree dirstribution 
-    distribution = np.asarray(distribution)
-    # log scale 
-    distribution_log = np.log(distribution)
-    # cumulative distribution 
-    cumulative = list(map(lambda i: [distribution[i,0],np.sum(distribution[i:,1])], np.arange(distribution.shape[0])))
-    cumulative = np.log(cumulative)
-    data = []
-    data.append(distribution)
-    data.append(distribution_log)
-    data.append(cumulative)
-    plotdistributuin(data, "img/{0}_{1}.png".format(alpha,size))
-    # remove the graph
-    G.clear()
-    giant.clear()
-    data = []
+    # # orgin degree dirstribution 
+    # distribution = np.asarray(distribution)
+    # # log scale 
+    # distribution_log = np.log(distribution)
+    # # cumulative distribution 
+    # cumulative = list(map(lambda i: [distribution[i,0],np.sum(distribution[i:,1])], np.arange(distribution.shape[0])))
+    # cumulative = np.log(cumulative)
+    # data = []
+    # data.append(distribution)
+    # data.append(distribution_log)
+    # data.append(cumulative)
+    # plotdistributuin(data, "img/{0}_{1}.png".format(alpha,size))
+    # # remove the graph
+    # G.clear()
+    # giant.clear()
+    # data = []
 
-    # draw and show graph
-    plt.clf()
-    nx.draw_spring(G,nodelist=d.keys(), node_color = "#FF8800", node_size=[10*v/np.mean(list(d.values())) for v in d.values()])
-    plt.savefig('powerlaw_A{0}_S{1}.png'.format(alpha,size) ) 
+    # # draw and show graph
+    # fig = plt.figure(figsize=(8,6))
+    # plt.clf()
+    # nx.draw_spring(G,nodelist=d.keys(), node_color = "#FF8800", node_size=[10*v/np.mean(list(d.values())) for v in d.values()])
+    # plt.savefig('powerlaw_A{0}_S{1}.png'.format(alpha,size) ) 
 
     
 if __name__ == "__main__" :
     alpha = [1.9310 , 2.4710, 3.271, 6.378]
     size = [100 , 1000, 10000]
-    print ("alpha,nodes,edges,S,re_alpha,re_dim")
+    print ("alpha,nodes,edges,S,radius")
     for a in alpha:
         for s in size:
              powerlaw_network(a, s)
