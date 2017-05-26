@@ -5,6 +5,8 @@ import time
 import csv
 import time
 import networkx as nx
+from scipy import linspace, polyval, polyfit, sqrt, stats, randn
+
 # import powerlaw
 # import plfit
 
@@ -48,11 +50,16 @@ if __name__ == "__main__" :
     distribution = np.asarray(distribution)
     # log scale 
     distribution_log = np.log(distribution)
+    (ar,br)=polyfit(distribution_log[:,0],distribution_log[:,1],1)
+    print (ar)
     # cumulative distribution 
     cumulative = list(map(lambda i: [distribution[i,0],np.sum(distribution[i:,1])], np.arange(distribution.shape[0])))
     cumulative = np.log(cumulative)
-    data = []
-    data.append(distribution)
-    data.append(distribution_log)
-    data.append(cumulative)
-    plotdistributuin(data, "img/Flickr.png")
+
+    (ar,br)=polyfit(cumulative[:,0],cumulative[:,1],1)
+    print (ar)
+    # data = []
+    # data.append(distribution)
+    # data.append(distribution_log)
+    # data.append(cumulative)
+    # plotdistributuin(data, "img/Flickr.png")
